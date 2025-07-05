@@ -87,7 +87,7 @@ venv\Scripts\activate     # Windows
 pip install -r requirement.txt
 ```
 
-## Dataset
+## Dataset (if you want to train your own model)
 
 ### Download FER+ Dataset
 
