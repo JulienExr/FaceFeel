@@ -1,6 +1,7 @@
 # Ignore all files in the archive directory
 
 /archive/
+/archive_fer/
 
 # Ignore Python cache files
 __pycache__/
