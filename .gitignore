@@ -1,3 +1,9 @@
 # Ignore all files in the archive directory
 
 /archive/
+
+# Ignore Python cache files
+__pycache__/
+
+# Ignore Venvironment files
+venv/
