@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, ".."))
 
 def load_model(path, device):
-    model = EmotionRecognitionModel(num_classes=7)
+    model = EmotionRecognitionModel(num_classes=8)
     model.load_state_dict(torch.load(path, map_location=device))
     model.to(device)
     model.eval()
@@ -31,7 +31,12 @@ def predict_image(model, face_tensor, device, class_names):
     with torch.no_grad():
         output = model(face_tensor)
         _, predicted = torch.max(output, 1)
-    return class_names[predicted.item()]
+        predicted_idx = predicted.item()
+        
+        if predicted_idx >= len(class_names):
+            return f"Unknown_Class_{predicted_idx}"
+        
+        return class_names[predicted_idx]
 
 def predict_from_webcam(model, device, class_names, transform):
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
@@ -97,7 +102,7 @@ if __name__ == "__main__":
         transforms.Normalize((0.5,), (0.5,))
     ])
 
-    class_names = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+    class_names = ['Anger', 'Contempt', 'Disgust', 'Fear', 'Happiness', 'Neutral', 'Sadness', 'Surprise']
 
     model = load_model(args.model, device)
 

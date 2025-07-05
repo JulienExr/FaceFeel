@@ -13,7 +13,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, ".."))
 
 def train(model, train_loader, val_loader, criterion, optimizer, scheduler, device, num_epochs=10):
     best_val_acc = 0.0
-    patience = 15  # Nombre d'époques sans amélioration avant d'arrêter
+    patience = 15
     patience_counter = 0
 
     for epoch in range(num_epochs):
@@ -44,19 +44,17 @@ def train(model, train_loader, val_loader, criterion, optimizer, scheduler, devi
 
         if val_acc > best_val_acc:
             best_val_acc = val_acc
-            patience_counter = 0  # Reset du compteur
+            patience_counter = 0
             save_dir = os.path.join(PROJECT_ROOT, "experiments", "checkpoints")
             torch.save(model.state_dict(), os.path.join(save_dir, "best_model.pt"))
-            print(f"📈 Nouveau meilleur modèle sauvegardé ! Val Acc: {val_acc:.4f}")
+            print(f"Nouveau meilleur modèle sauvegardé ! Val Acc: {val_acc:.4f}")
         else:
             patience_counter += 1
             
-        # Early stopping
         if patience_counter >= patience:
-            print(f"🛑 Early stopping après {epoch+1} époques (pas d'amélioration depuis {patience} époques)")
+            print(f"Early stopping après {epoch+1} époques (pas d'amélioration depuis {patience} époques)")
             break
             
-        # Ajustement du learning rate
         scheduler.step()
 
     print("Training complete. Best validation accuracy: {:.4f}".format(best_val_acc))
@@ -74,10 +72,10 @@ def evaluate(model, val_loader, device):
     return correct / total
 
 if __name__ == "__main__":
-    batch_size = 32  # Réduit pour plus de stabilité avec le modèle plus grand
-    num_epochs = 120  # Plus d'époques
-    learning_rate = 1e-4  # Learning rate plus conservateur
-    num_classes = 7
+    batch_size = 32 
+    num_epochs = 120
+    learning_rate = 1e-4
+    num_classes = 8
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

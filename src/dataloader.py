@@ -16,19 +16,17 @@ def get_dataloader(data_dir, image_size=48, batch_size=64):
         train_loader, val_loader, test_loader: DataLoaders for training, validation, and testing datasets.
     """
 
-    # Transformations avec augmentation améliorée pour l'entraînement
     train_transforms = transforms.Compose([
         transforms.Resize((image_size, image_size)),
         transforms.Grayscale(num_output_channels=1),
         transforms.RandomHorizontalFlip(p=0.4),          
         transforms.RandomRotation(8),                    
         transforms.RandomAffine(degrees=0, translate=(0.08, 0.08)),  
-        transforms.ColorJitter(brightness=0.2, contrast=0.2),  # Nouveau
+        transforms.ColorJitter(brightness=0.2, contrast=0.2), 
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.5], std=[0.5])
     ])
     
-    # Transformations simples pour validation/test
     val_transforms = transforms.Compose([
         transforms.Resize((image_size, image_size)),
         transforms.Grayscale(num_output_channels=1),
