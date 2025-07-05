@@ -31,10 +31,19 @@ def get_dataloader(data_dir, image_size=48, batch_size=64):
         root=os.path.join(data_dir, 'val'),
         transform=common_transforms
         )
-    test_dataset = torchvision.datasets.ImageFolder(
-        root=os.path.join(data_dir, 'test'),
-        transform=common_transforms
-        )
+    test_path = os.path.join(data_dir, 'test')
+    if os.path.exists(test_path):
+        test_dataset = torchvision.datasets.ImageFolder(
+            root=test_path,
+            transform=common_transforms
+            )
+        test_loader = DataLoader(
+            test_dataset,
+            batch_size=batch_size,
+            shuffle=False
+            )
+    else:
+        test_loader = None
 
     train_loader = DataLoader(
         train_dataset,
@@ -43,11 +52,6 @@ def get_dataloader(data_dir, image_size=48, batch_size=64):
         )
     val_loader = DataLoader(
         val_dataset,
-        batch_size=batch_size,
-        shuffle=False
-        )
-    test_loader = DataLoader(
-        test_dataset,
         batch_size=batch_size,
         shuffle=False
         )

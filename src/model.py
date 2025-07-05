@@ -20,7 +20,7 @@ class EmotionRecognitionModel(nn.Module):
         self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
 
         self.dropout = nn.Dropout(p=0.5)
-        self.fc1 = nn.Linear(128 * 12 * 12, 512)
+        self.fc1 = nn.Linear(128 * 6 * 6, 512)
         self.fc2 = nn.Linear(512, num_classes)
 
     def forward(self, x):
