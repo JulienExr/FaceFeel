@@ -198,4 +198,4 @@ Edit the `src/model.py` file to adjust:
 | `dataloader.py` | Handles data loading and preprocessing |
 | `model.py` | Defines the CNN architecture |
 
-**Note**: This project is for educational and research purposes. Performance may vary depending on usage conditions and input image quality.
+**Note**: This project is for educational purposes. Performance may vary depending on usage conditions and input image quality.
