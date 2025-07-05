@@ -8,3 +8,5 @@ __pycache__/
 
 # Ignore Venvironment files
 venv/
+
+experiments/checkpoints/best_model_fer.pt
