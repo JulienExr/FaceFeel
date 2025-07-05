@@ -4,6 +4,10 @@ import torchvision.transforms as transforms
 from model import EmotionRecognitionModel
 from dataloader import get_dataloader
 import numpy as np
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, ".."))
 
 def load_model(path, device):
     model = EmotionRecognitionModel(num_classes=7)
@@ -85,7 +89,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", choices=["image", "webcam"], default="image")
     parser.add_argument("--image", type=str, help="Chemin vers l'image si mode image")
-    parser.add_argument("--model", type=str, default="experiments/checkpoints/best_model.pt")
+    parser.add_argument("--model", type=str, default=os.path.join(PROJECT_ROOT, "experiments", "checkpoints", "best_model.pt"))
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

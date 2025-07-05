@@ -16,20 +16,40 @@ class EmotionRecognitionModel(nn.Module):
 
         self.conv3 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1)
         self.bn3 = nn.BatchNorm2d(128)
+        
+        # Ajout d'une 4ème couche convolutionnelle
+        self.conv4 = nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1)
+        self.bn4 = nn.BatchNorm2d(256)
 
         self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
 
-        self.dropout = nn.Dropout(p=0.5)
-        self.fc1 = nn.Linear(128 * 6 * 6, 512)
-        self.fc2 = nn.Linear(512, num_classes)
+        # Dropout ajusté
+        self.dropout_conv = nn.Dropout2d(p=0.15)  
+        self.dropout1 = nn.Dropout(p=0.4)        
+        self.dropout2 = nn.Dropout(p=0.5)        
+        
+        # Architecture FC adaptée à la nouvelle conv4
+        # Après 4 conv + 3 pools: 48/2/2/2 = 6x6, avec 256 channels
+        self.fc1 = nn.Linear(256 * 3 * 3, 512)   # Ajusté pour conv4
+        self.fc2 = nn.Linear(512, 256)           
+        self.fc3 = nn.Linear(256, num_classes)
 
     def forward(self, x):
         x = self.pool(F.relu(self.bn1(self.conv1(x))))
+        x = self.dropout_conv(x)  
+        
         x = self.pool(F.relu(self.bn2(self.conv2(x))))
+        x = self.dropout_conv(x)  
+        
         x = self.pool2(F.relu(self.bn3(self.conv3(x))))
+        x = self.dropout_conv(x)
+        
+        # Nouvelle couche conv4 avec pooling
+        x = self.pool2(F.relu(self.bn4(self.conv4(x))))
         
         x = x.view(x.size(0), -1)
 
-        x = self.dropout(F.relu(self.fc1(x)))
-        x = self.fc2(x)
+        x = self.dropout1(F.relu(self.fc1(x)))
+        x = self.dropout2(F.relu(self.fc2(x)))
+        x = self.fc3(x)
         return x
