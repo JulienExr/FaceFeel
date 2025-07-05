@@ -126,7 +126,7 @@ archive/
 
 ## Usage
 
-### Train the model
+### Train the model (skip if you just want to test my model)
 
 ```bash
 cd src
